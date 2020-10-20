@@ -93,9 +93,10 @@ dependencies = [
 
 [[package]]
 name = "cryptopro-rust"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "bindgen 0.55.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.79 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

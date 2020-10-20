@@ -1,6 +1,6 @@
 [package]
 name = "cryptopro-rust"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["MaratWorker <maratn566ek@gmail.com>"]
 edition = "2018"
 description = "Easy crypto binding"
@@ -11,3 +11,4 @@ license = "MIT"
 bindgen="*"
 
 [dependencies]
+libc="*"
