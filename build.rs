@@ -13,7 +13,11 @@ fn main(){
     let link_search_path = "/opt/cprocsp/lib/amd64";
 
     println!("cargo:rustc-link-search=native={}", link_search_path);
-    // println!("cargo:rustc-link-lib=dylib=badmath");
+    println!("cargo:rustc-link-lib=dylib=ssp");
+    println!("cargo:rustc-link-lib=dylib=capi10");
+    println!("cargo:rustc-link-lib=dylib=capi20");
+    println!("cargo:rustc-link-lib=dylib=rdrsup");
+    println!("cargo:rustc-link-lib=dylib=pthread");
     println!("cargo:include={}", includedir);
 
     // Tell cargo to tell rustc to link the system bzip2
@@ -33,6 +37,9 @@ fn main(){
         "-DHAVE_LIMITS_H".to_string(),
         "-D_COMPACT".to_string(), 
         "-DHAVE_STDINT_H".to_string(), 
+        "-D_GLIBCXX_USE_CXX11_ABI=0".to_string(),
+        "-I/opt/cprocsp/include".to_string(), "-I/opt/cprocsp/include/cpcsp".to_string(), 
+        "-I/opt/cprocsp/include/asn1c/rtsrc".to_string(), "-I/opt/cprocsp/include/asn1data".to_string(),
         format!("-I{}", includedir) 
     ];
     let bindings = bindgen::Builder::default()
