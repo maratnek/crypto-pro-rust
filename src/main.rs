@@ -17,8 +17,8 @@ const GR3411LEN : usize = 64;
 fn main() ->  Result<(), i32> {
     let r : i32 = 32;
 
-    let  bIsReadingFailed: BOOL = FALSE as BOOL;
-    let hProv: HCRYPTPROV  = 0;
+    let bIsReadingFailed: BOOL = FALSE as BOOL;
+    let mut hProv: HCRYPTPROV  = 0;
     let mut hHash: HCRYPTHASH  = 0;
     let hFile: FILE;
     let rgbFile: [BYTE; BUFSIZE];
@@ -45,20 +45,29 @@ fn main() ->  Result<(), i32> {
     let contents = fs::read_to_string(filename)
         .expect("Something went wrong reading the file");
         
-    // if(!CryptAcquireContext(
-	// &hProv,
-	// NULL,
-	// NULL,
-	// PROV_GOST_2012_256,
-	// CRYPT_VERIFYCONTEXT))
-    // {
-	// HandleError("CryptAcquireContext failed");
-    // }
+    let hprov = &mut hProv as *mut HCRYPTPROV;
+    unsafe {
+        // todo this function only for the CryptAcquireContextW for UNICODE
+        let status = !CryptAcquireContextW(
+        	hprov,
+        	0 as LPCWSTR,//NULL,
+        	0 as LPCWSTR,//NULL,
+        	PROV_GOST_2012_256,
+        	CRYPT_VERIFYCONTEXT);
+        println!("Status crypto acquire context:\n{}", status);
+        if (status < 0) {
+            HandleError("Status crypto acquire context");
+        }
+    }
+
     // println!("With text:\n{}", contents);
     let hash = &mut hHash as *mut HCRYPTHASH;
     unsafe {
-        !CryptCreateHash(hProv, CALG_GR3411_2012_256, 0, 0, hash);
-        println!("With text:\n{}", contents);
+        let status = !CryptCreateHash(hProv, CALG_GR3411_2012_256, 0, 0, hash);
+        println!("Status crypto create hash:\n{}", status);
+        if (status < 0) {
+            HandleError("Status crypto acquire context");
+        }
     }
     // if()
     // {
@@ -70,8 +79,9 @@ fn main() ->  Result<(), i32> {
 
 fn HandleError(s: &str)
 {
-    // unsafe {let mut err: DWORD = GetLastError();};
-    // println!("Error number     : {}\n", err);
+    let mut err: u32;
+    unsafe {err = GetLastError();};
+    println!("Error number     : {}\n", err);
     println!("Error description: {}\n", s);
     // if(!err) 
     //     err = 1;
