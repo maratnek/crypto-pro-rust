@@ -1,0 +1,1 @@
+#include <WinCryptEx.h>
