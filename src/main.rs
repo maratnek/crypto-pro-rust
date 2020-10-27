@@ -47,20 +47,7 @@ fn main() -> Result<(), i32> {
     file.sync_all();
     let mut buffer: [BYTE;1024] = [0; 1024];
     let mut n = file.read(&mut buffer);
-    // println!("Data buffer: {:?} size {:?}", buffer, n);
-    // for elem in buffer.iter() {
-        // print!("{} ", elem);
-    // }
     println!("End print buf");
-    // n = file.read(&mut buffer);
-    // println!("Data buffer: {:?} size {:?}", buffer, n);
-    // while (n.unwrap() > 0) {
-        // n = file.read(&mut buffer);
-        // println!("Data buffer: {:?} size {:?}", buffer, n);
-    // }
-
-    // let data = fs::read(&filename);
-    // println!("Data : {:?}", data);
 
     let contents = fs::read_to_string(&filename).expect("Something went wrong reading the file");
     let hprov = &mut hProv as *mut HCRYPTPROV;
@@ -92,7 +79,6 @@ fn main() -> Result<(), i32> {
 
     let mut i = 0;
     let count = n.unwrap();
-    // loop {
         let d = &buffer as *const BYTE;
         unsafe {
             println!("Count {}", count);
@@ -105,13 +91,6 @@ fn main() -> Result<(), i32> {
             }
         }
 
-    //     i += 1;
-    //     if (i == 15) {
-    //         println!("End loop");
-    //         break;
-    //     }
-    // }
-
     cbHash = GR3411LEN;
     let mut pbData:[BYTE; 64]  = [0; 64];
     println!("pbData: {:?}", pbData[0]);
@@ -121,15 +100,6 @@ fn main() -> Result<(), i32> {
         print!("{} ", x);
     }
     unsafe {
-
-    // pub fn CryptGetHashParam(
-    //     hHash: HCRYPTHASH,
-    //     dwParam: DWORD,
-    //     pbData: *mut BYTE,
-    //     pdwDataLen: *mut DWORD,
-    //     dwFlags: DWORD,
-    // ) -> BOOL;
-    
         let mut countHash = &mut cbHash as *mut DWORD; 
         let status = CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, countHash, 0);
             if (status == 0) {
@@ -141,17 +111,12 @@ fn main() -> Result<(), i32> {
 
     println!("GR3411 hash of file {} is: ", argv[1]);
     println!("Arrray size: {}", cbHash);
-    // println!("pbData: {:?}", pbData[0]);
-    // let vDig = unsafe {rgbDigits.as_bytes();};
     let mut arrChar: Vec<char> = Vec::new();
-    // char c = '2';
     for mut elem in rgbDigits.chars() {
         arrChar.push(elem); 
         print!("{}", elem); 
     }
     println!();
-    // let vDig = rgbDigits.to_string().as_bytes();
-    // vDig[0];
     for x in pbData.iter() {
         let it1 : usize = (x >> 4) as usize;
         let it2 : usize= (x & 0xf) as usize;
