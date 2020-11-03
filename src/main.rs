@@ -63,10 +63,12 @@ fn main() -> Result<(), i32> {
         println!("Status crypto acquire context:{} hprov {}", status, *hprov);
         if (status == 0) {
             HandleError("Status crypto acquire context");
+            // Err(2);
         }
     }
 
     // println!("With text:\n{}", contents);
+    // some init for hash
     let hash = &mut hHash as *mut HCRYPTHASH;
     unsafe {
         let status = CryptCreateHash(hProv, CALG_GR3411_2012_256, 0, 0, hash);

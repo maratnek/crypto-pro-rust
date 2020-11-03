@@ -12,3 +12,7 @@ bindgen="*"
 
 [dependencies]
 libc="*"
+
+[lib]
+name = "libcryptopro_sys"
+path = "src/lib.rs"
