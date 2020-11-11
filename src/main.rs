@@ -1,13 +1,6 @@
-#![allow(non_upper_case_globals)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
+extern crate libcryptopro_sys as csp;
+use csp::*;
 
-include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-#[link(name = "ssp", kind = "dylib")]
-#[link(name = "capi10", kind = "dylib")]
-#[link(name = "capi20", kind = "dylib")]
-#[link(name = "rdrsup", kind = "dylib")]
-#[link(name = "pthread", kind = "dylib")]
 use std::env;
 use std::fs;
 use std::fs::File;
@@ -63,12 +56,10 @@ fn main() -> Result<(), i32> {
         println!("Status crypto acquire context:{} hprov {}", status, *hprov);
         if (status == 0) {
             HandleError("Status crypto acquire context");
-            // Err(2);
         }
     }
 
     // println!("With text:\n{}", contents);
-    // some init for hash
     let hash = &mut hHash as *mut HCRYPTHASH;
     unsafe {
         let status = CryptCreateHash(hProv, CALG_GR3411_2012_256, 0, 0, hash);

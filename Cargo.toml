@@ -13,6 +13,10 @@ bindgen="*"
 [dependencies]
 libc="*"
 
+[[bin]]
+name="bincrypto_pro"
+path="src/main.rs"
+
 [lib]
 name = "libcryptopro_sys"
 path = "src/lib.rs"
